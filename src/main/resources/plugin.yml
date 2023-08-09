@@ -1,0 +1,8 @@
+name: GMSpVoucher
+version: '${project.version}'
+main: com.ashkiano.gmspvoucher.GMSpVoucher
+api-version: '1.16'
+author: AshKiano
+commands:
+  givevoucher:
+    description: Gives the player a GMSp Voucher.
