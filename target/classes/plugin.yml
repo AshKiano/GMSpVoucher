@@ -1,5 +1,5 @@
 name: GMSpVoucher
-version: '1.4'
+version: '1.5'
 main: com.ashkiano.gmspvoucher.GMSpVoucher
 api-version: '1.16'
 author: AshKiano

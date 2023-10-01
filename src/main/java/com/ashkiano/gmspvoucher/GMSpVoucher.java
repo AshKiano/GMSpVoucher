@@ -22,17 +22,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 
-//TODO přidat permisi
-//TODO přidat konfigurovatelné lore a name
 //TODO přidat odpočet
 //TODO když je někde kde by umřel při změně modu zpět na survival, tak h portnout na spawn nebo na safe místo
 //TODO opravit chybu že když bude odpojen, tak se mu nevrátí zpět původní gamemode
 public class GMSpVoucher extends JavaPlugin implements Listener {
-    private final String voucherLore = ChatColor.GREEN + "Use to get 5 minutes in Spectator mode!";
+    private String voucherName;
+    private String voucherLore;
 
     @Override
     public void onEnable() {
-        this.saveDefaultConfig(); // Saves the default config if it doesn't exist
+        this.saveDefaultConfig();
+        voucherName = ChatColor.translateAlternateColorCodes('&', getConfig().getString("voucher-name"));
+        voucherLore = ChatColor.translateAlternateColorCodes('&', getConfig().getString("voucher-lore"));
+
         getServer().getPluginManager().registerEvents(this, this);
         getCommand("givevoucher").setExecutor(new GiveVoucherCommand());
 
@@ -48,7 +50,6 @@ public class GMSpVoucher extends JavaPlugin implements Listener {
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
-        // Verify if the item in hand has lore
         if (event.getAction().toString().contains("RIGHT") &&
                 itemInHand != null &&
                 itemInHand.getType() == Material.PAPER &&
@@ -56,9 +57,8 @@ public class GMSpVoucher extends JavaPlugin implements Listener {
                 itemInHand.getItemMeta().hasLore() &&
                 itemInHand.getItemMeta().getLore().contains(voucherLore)) {
 
-            final GameMode originalGameMode = player.getGameMode();
             player.setGameMode(GameMode.SPECTATOR);
-            Bukkit.getScheduler().runTaskLater(this, () -> player.setGameMode(originalGameMode), 5 * 60 * 20L);
+            Bukkit.getScheduler().runTaskLater(this, () -> player.setGameMode(GameMode.SURVIVAL), 5 * 60 * 20L);
             itemInHand.setAmount(itemInHand.getAmount() - 1);
         }
     }
@@ -72,7 +72,7 @@ public class GMSpVoucher extends JavaPlugin implements Listener {
                 if (player.hasPermission(permission)) {
                     ItemStack voucher = new ItemStack(Material.PAPER);
                     ItemMeta meta = voucher.getItemMeta();
-                    meta.setDisplayName(ChatColor.GOLD + "GMSp Voucher");
+                    meta.setDisplayName(voucherName);
                     meta.setLore(Arrays.asList(voucherLore));
                     voucher.setItemMeta(meta);
                     player.getInventory().addItem(voucher);
