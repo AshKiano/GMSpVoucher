@@ -40,7 +40,7 @@ public class GMSpVoucher extends JavaPlugin implements Listener {
 
         Metrics metrics = new Metrics(this, 19348);
 
-        this.getLogger().info("Thank you for using the GMSpVoucher plugin! If you enjoy using this plugin, please consider making a donation to support the development. You can donate at: https://paypal.me/josefvyskocil");
+        this.getLogger().info("Thank you for using the GMSpVoucher plugin! If you enjoy using this plugin, please consider making a donation to support the development. You can donate at: https://donate.ashkiano.com");
 
         checkForUpdates();
     }
